@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ClientForm = () => {
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        firstName: localStorage.getItem('firstName') || '',
+        lastName: localStorage.getItem('lastName') || '',
     });
 
     const [submitted, setSubmitted] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem('firstName', formData.firstName);
+        localStorage.setItem('lastName', formData.lastName);
+    }, [formData]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,10 +19,7 @@ const ClientForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission (e.g., send data to the server)
         console.log('Form submitted:', formData);
-
-        // Set the submitted state to true
         setSubmitted(true);
     };
 
