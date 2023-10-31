@@ -3,7 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { SetUserType } from './components/SetUserType';
-
+import ClientForm from './components/ClientForm';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
@@ -14,13 +14,15 @@ import './custom.css'
 export default class App extends Component {
   static displayName = App.name;
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <AuthorizeRoute path='/SetUserType' component={SetUserType} />
-        <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-      </Layout>
-    );
+    render() {
+        return (
+            <Layout>
+                <Route exact path='/' component={Home} />
+                <AuthorizeRoute path='/SetUserType' component={SetUserType} />
+                <Route path='/client' component={ClientForm} />
+                <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+            </Layout>
+        );
+    }
   }
-}
+
