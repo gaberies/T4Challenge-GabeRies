@@ -1,12 +1,30 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace T4Challenge.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public bool IsAdmin { get; private set; }
+        public bool IsClient { get; private set; }
+
+        public void SetIsAdmin(bool value)
+        {
+            IsAdmin = value;
+        }
+
+        public bool GetIsAdmin()
+        {
+            return IsAdmin;
+        }
+
+        public void SetIsClient(bool value)
+        {
+            IsClient = value;
+        }
+
+        public bool GetIsClient()
+        {
+            return IsClient;
+        }
     }
 }
