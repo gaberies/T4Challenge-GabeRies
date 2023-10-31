@@ -1,26 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const ClientForm = () => {
     const [formData, setFormData] = useState({
-        firstName: localStorage.getItem('firstName') || '',
-        lastName: localStorage.getItem('lastName') || '',
+        firstName: '',
+        lastName: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
 
-    useEffect(() => {
-        localStorage.setItem('firstName', formData.firstName);
-        localStorage.setItem('lastName', formData.lastName);
-    }, [formData]);
-
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        e.persist();
+        setFormData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        setSubmitted(true);
+
+        try {
+            const response = await fetch('/api/FormSubmissions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                }),
+            });
+
+            console.log('Request data:', JSON.stringify({
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+            }));
+
+            console.log('Response status:', response.status);
+
+            if (response.ok) {
+                console.log('Form submitted successfully!');
+                setSubmitted(true);
+            } else {
+                const errorText = await response.text();
+                console.error('Failed to submit form:', errorText);
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        }
     };
 
     return (
