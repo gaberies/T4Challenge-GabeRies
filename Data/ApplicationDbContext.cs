@@ -9,6 +9,7 @@ namespace T4Challenge.Data
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
         public DbSet<FormSubmission> FormSubmissions { get; set; }
+        public DbSet<FieldDefinition> FieldDefinitions { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options,
