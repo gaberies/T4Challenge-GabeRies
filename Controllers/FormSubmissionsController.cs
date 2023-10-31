@@ -24,21 +24,36 @@ public class FormSubmissionsController : ControllerBase
         return await _context.FormSubmissions.ToListAsync();
     }
 
-    // POST: api/FormSubmissions
     [HttpPost]
     public async Task<ActionResult<FormSubmission>> PostFormSubmission([FromBody] FormSubmission formData)
     {
         try
         {
+            formData.SubmissionDate = DateTime.Now;
             _context.FormSubmissions.Add(formData);
             await _context.SaveChangesAsync();
+
+            // Save dynamic fields separately
+            var dynamicFields = formData.DynamicFields;
+            if (dynamicFields != null && dynamicFields.Count > 0)
+            {
+                Console.WriteLine($"Dynamic Fields Count: {dynamicFields.Count}");
+                foreach (var field in dynamicFields)
+                {
+                    Console.WriteLine($"Adding dynamic field: {field.FieldName} - {field.FieldValue}");
+                    field.FormSubmissionId = formData.Id;
+                    _context.DynamicFields.Add(field);
+                }
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction("GetFormSubmissions", new { id = formData.Id }, formData);
         }
         catch (Exception ex)
         {
-            // Log the exception
+            Console.WriteLine($"Error: {ex.Message}");
             return BadRequest($"Error: {ex.Message}");
         }
     }
+
 }

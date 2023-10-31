@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using T4Challenge.Data;
 
 namespace T4Challenge.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231031225038_InitialPersistedGrants")]
+    partial class InitialPersistedGrants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,30 +291,6 @@ namespace T4Challenge.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("T4Challenge.Models.DynamicField", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("FieldName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FieldValue")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("FormSubmissionId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FormSubmissionId");
-
-                    b.ToTable("DynamicFields");
-                });
-
             modelBuilder.Entity("T4Challenge.Models.FieldDefinition", b =>
                 {
                     b.Property<int>("Id")
@@ -337,6 +315,9 @@ namespace T4Challenge.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("DynamicFields")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
@@ -401,22 +382,6 @@ namespace T4Challenge.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("T4Challenge.Models.DynamicField", b =>
-                {
-                    b.HasOne("T4Challenge.Models.FormSubmission", "FormSubmission")
-                        .WithMany("DynamicFields")
-                        .HasForeignKey("FormSubmissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FormSubmission");
-                });
-
-            modelBuilder.Entity("T4Challenge.Models.FormSubmission", b =>
-                {
-                    b.Navigation("DynamicFields");
                 });
 #pragma warning restore 612, 618
         }

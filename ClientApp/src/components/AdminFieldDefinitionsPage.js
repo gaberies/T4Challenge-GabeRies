@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 const AdminFieldDefinitionsPage = () => {
     const [fieldDefinitions, setFieldDefinitions] = useState([]);
-    const [newField, setNewField] = useState({ name: '', type: '' });
+    const [newField, setNewField] = useState({ name: '', type: 'string' });
     const [editField, setEditField] = useState(null);
 
     useEffect(() => {
-        // Fetch field definitions from the API and update state
         const fetchFieldDefinitions = async () => {
             try {
                 const response = await fetch('/api/FieldDefinitions');
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Field Definitions:', data); // Add this line
                     setFieldDefinitions(data);
                 } else {
                     console.error('Failed to fetch field definitions');
@@ -22,7 +22,7 @@ const AdminFieldDefinitionsPage = () => {
         };
 
         fetchFieldDefinitions();
-    }, []); // Run once on component mount
+    }, []);
 
     const addFieldDefinition = async () => {
         try {
@@ -58,9 +58,7 @@ const AdminFieldDefinitionsPage = () => {
                 });
 
                 if (response.ok) {
-                    const responseBody = await response.json();
-                    console.log('Response body:', responseBody); // Add this line for logging
-                    const updatedFieldDefinition = responseBody;
+                    const updatedFieldDefinition = await response.json();
                     setFieldDefinitions((prevDefinitions) =>
                         prevDefinitions.map((field) => (field.id === updatedFieldDefinition.id ? updatedFieldDefinition : field))
                     );

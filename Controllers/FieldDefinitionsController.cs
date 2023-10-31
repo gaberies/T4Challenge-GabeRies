@@ -20,7 +20,7 @@ public class FieldDefinitionsController : ControllerBase
 
     private bool FieldDefinitionExists(int id)
     {
-        return _context.FieldDefinitions.Any(e => e.Id == id);
+        return _context.FormSubmissions.Any(e => e.Id == id);
     }
 
     [HttpGet]
