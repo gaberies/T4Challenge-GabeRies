@@ -40,6 +40,7 @@ public class FormSubmissionsController : ControllerBase
                 Console.WriteLine($"Dynamic Fields Count: {dynamicFields.Count}");
                 foreach (var field in dynamicFields)
                 {
+                    field.Id = Guid.NewGuid();
                     Console.WriteLine($"Adding dynamic field: {field.FieldName} - {field.FieldValue}");
                     field.FormSubmissionId = formData.Id;
                     _context.DynamicFields.Add(field);

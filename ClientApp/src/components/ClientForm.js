@@ -62,9 +62,9 @@ const ClientForm = () => {
             } else {
                 console.error('Failed to submit form:', response.statusText);
             }
-        }   catch (error) {
+        }     catch (error) {
                 console.error('Error submitting form:', error);
-                console.error('Error details:', await error.json()); // Log the error details
+                console.error('Error details:', error.response ? await error.response.json() : 'No response details');
         }
     };
 
