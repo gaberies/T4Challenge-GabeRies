@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +12,7 @@ namespace T4Challenge.Models
         public DateTime SubmissionDate { get; set; }
 
 
-        // Change DynamicFields to a List of DynamicField
+        [JsonProperty("dynamicFields")]
         public List<DynamicField> DynamicFields { get; set; }
     }
 }

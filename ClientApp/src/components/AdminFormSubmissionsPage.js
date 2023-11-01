@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const AdminFormSubmissionsPage = () => {
     const [formSubmissions, setFormSubmissions] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchFormSubmissions = async () => {
@@ -17,6 +18,8 @@ const AdminFormSubmissionsPage = () => {
                 }
             } catch (error) {
                 console.error('Error fetching form submissions:', error);
+            } finally {
+                setLoading(false); // Set loading to false after fetching
             }
         };
 
@@ -26,20 +29,34 @@ const AdminFormSubmissionsPage = () => {
     return (
         <div>
             <h1>Admin Form Submissions Page</h1>
-            {formSubmissions.map((submission) => (
-                <div key={submission.id}>
-                    <h3>Submission #{submission.id}</h3>
-                    <p>
-                        <strong>First Name:</strong> {submission.firstName}
-                    </p>
-                    <p>
-                        <strong>Last Name:</strong> {submission.lastName}
-                    </p>
-                    <p>
-                        <strong>Submission Date:</strong> {submission.submissionDate}
-                    </p>
-                </div>
-            ))}
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                formSubmissions.map((submission) => (
+                    <div key={submission.id}>
+                        <h3>Submission #{submission.id}</h3>
+                        <p>
+                            <strong>First Name:</strong> {submission.firstName}
+                        </p>
+                        <p>
+                            <strong>Last Name:</strong> {submission.lastName}
+                        </p>
+                        <p>
+                            <strong>Submission Date:</strong> {submission.submissionDate}
+                        </p>
+                        <p>
+                            <strong>Dynamic Fields:</strong>
+                            {submission.dynamicFields && submission.dynamicFields.map((field) => (
+                                <div key={field.id}>
+                                    <p>
+                                        <strong>{field.fieldName}:</strong> {field.fieldValue}
+                                    </p>
+                                </div>
+                            ))}
+                        </p>
+                    </div>
+                ))
+            )}
         </div>
     );
 };
